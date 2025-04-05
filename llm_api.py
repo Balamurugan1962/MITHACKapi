@@ -14,7 +14,7 @@ def chat(content):
         messages=[
             {
                 "role": "system",
-                "content" : "Just go along with what the user is saying"
+                "content" : "Just go along with what the user is saying, encourgae about studies and give reply is short messege formate"
             },
             {
                 "role": "user",
