@@ -1,7 +1,7 @@
 from flask import Flask,jsonify
 from flask_restful import Api,Resource,reqparse
 from flask_cors import CORS
-from llm_api import generate_question,generate_question_feedback,generate_assugnment_feedback
+from llm_api import generate_question,generate_question_feedback,generate_assugnment_feedback,chat
 from werkzeug.datastructures import FileStorage
 from pdfParsing import parse_PDF
 
@@ -69,8 +69,8 @@ Bellow function is for Quiz Feedback analysis
 """
 getQuizFeedback_post_parse = reqparse.RequestParser()
 
-getQuizFeedback_post_parse.add_argument("Questions", type=dict, action='append', location='json', help="Provide list of question objects")
-getQuizFeedback_post_parse.add_argument("Score", type=int, action='append', location='json', help="Provide list of integer scores")
+getQuizFeedback_post_parse.add_argument("Questions", type=dict, action='append', location='json', help="Provide list of question objects",required=True)
+getQuizFeedback_post_parse.add_argument("Score", type=int, action='append', location='json', help="Provide list of integer scores",required=True)
 
 class getQuizFeedback(Resource):
     def post(self):
@@ -84,11 +84,16 @@ api.add_resource(getQuizFeedback,'/getQuizFeedback')
 Bellow function is for ChatBot
 """
 ChatBot_post_parse = reqparse.RequestParser()
-ChatBot_post_parse.add_argument("Messeges",type = dict, action = 'append',location='json',help = "Send the messeges")
+ChatBot_post_parse.add_argument("Message",type = str,location='form',help = "Send the messeges",required=True)
 class ChatBot(Resource):
     def post(self):
-        
-        return jsonify({"Reply" : "Heloo"})
+        args = ChatBot_post_parse.parse_args()
+        reply = chat(args["Message"])
+        print(reply)
+        return jsonify({"reply" : reply})
+
+    def get(self):
+        return jsonify({"Hello":"Hiii"})
     
 api.add_resource(ChatBot,'/ChatBot')
 
