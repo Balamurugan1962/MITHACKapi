@@ -80,8 +80,14 @@ class getQuizFeedback(Resource):
     
 api.add_resource(getQuizFeedback,'/getQuizFeedback')
 
+"""
+Bellow function is for ChatBot
+"""
+ChatBot_post_parse = reqparse.RequestParser()
+ChatBot_post_parse.add_argument("Messeges",type = dict, action = 'append',location='json',help = "Send the messeges")
 class ChatBot(Resource):
     def post(self):
+        
         return jsonify({"Reply" : "Heloo"})
     
 api.add_resource(ChatBot,'/ChatBot')
@@ -92,4 +98,4 @@ api.add_resource(ChatBot,'/ChatBot')
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0",port='5003',debug=True)
+    app.run(host="0.0.0.0",port='5003')
