@@ -17,6 +17,7 @@ Bellow function is for Generating Question analysis
 getQuestion_post_parse = reqparse.RequestParser()
 getQuestion_post_parse.add_argument("Topic",type=str,location = 'form',help='Give the topic',required= True)
 getQuestion_post_parse.add_argument("Type",type=str,location = 'form',help='Give the Type',required= True)
+getQuestion_post_parse.add_argument("Quantity",type=int,location = 'form',help='Give the Quantity',required= True)
 
 #For Genenrating the questions
 class getQuestion(Resource):
@@ -25,7 +26,7 @@ class getQuestion(Resource):
     
     def post(self):
         data = getQuestion_post_parse.parse_args()
-        responce = generate_question(data["Topic"],data["Type"])
+        responce = generate_question(data["Topic"],data["Type"],data["Quantity"])
 
         return responce
     
@@ -84,7 +85,7 @@ api.add_resource(getQuizFeedback,'/getQuizFeedback')
 Bellow function is for ChatBot
 """
 ChatBot_post_parse = reqparse.RequestParser()
-ChatBot_post_parse.add_argument("Message",type = str,location='form',help = "Send the messeges",required=True)
+ChatBot_post_parse.add_argument("Message",help = "Send the messeges",required=True)
 class ChatBot(Resource):
     def post(self):
         args = ChatBot_post_parse.parse_args()
