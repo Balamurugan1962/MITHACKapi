@@ -3,3 +3,7 @@ flask-restful
 flask_cors
 dotenv
 google-generativeai
+pdf2image
+pytesseract
+opencv-python
+numpy
