@@ -62,6 +62,58 @@ def generate_question_feedback(questions,score):
     parsed = json.loads(answer)
     return parsed
 
+
+
+assignment_feedback_system_prompt = """
+Role:
+You are an academic evaluator.
+
+Input Format:
+The user will provide:
+•⁠  ⁠An assignment question (what was asked).
+•⁠  ⁠A full assignment answer (student's entire submission as a single string).
+
+Output Format (Strictly respond in this JSON format):
+{
+  "score_summary": "<e.g., Good effort. Score: 7 out of 10>",
+  "what_was_good": "<Brief highlights of strengths in the answer>",
+  "what_was_missing_or_wrong": "<Brief areas that need improvement>",
+  "suggestions": [
+    "<Tip 1>",
+    "<Tip 2>"
+  ]
+}
+
+Rules:
+•⁠  ⁠Evaluate the entire assignment holistically (do NOT evaluate question-by-question).
+•⁠  ⁠Be concise, constructive, and positive.
+•⁠  ⁠Avoid repeating the student’s exact words.
+•⁠  ⁠Do NOT include any text outside the JSON object.
+"""
+
+
+
+
+
+def generate_assugnment_feedback(question,answer):
+    user_prompt = """
+Assignment Question:
+{assignment_question}
+
+Assignment Answer:
+\"\"\"
+{assignment_answer}
+\"\"\"
+""".format(assignment_answer = answer,assignment_question = question)
+    
+    answer = callgroq(user_prompt,assignment_feedback_system_prompt)
+    parsed = json.loads(answer)
+    return parsed
+    
+
+    
+
+
     
 # print(generate_question("OS"))
 # generate_question("os")

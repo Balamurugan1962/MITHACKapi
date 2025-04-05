@@ -2,8 +2,6 @@ import os
 import pytesseract
 import cv2
 import numpy as np
-from pdfParsing import deskew
-from pdfParsing import extract_text_from_image
 from pdf2image import convert_from_bytes
 
 def _get_tessdata_directory_path():
@@ -26,3 +24,24 @@ def deskew(image):
     center = (image.shape[1] // 2, image.shape[0] // 2)
     M = cv2.getRotationMatrix2D(center, angle, 1.0)
     return cv2.warpAffine(image, M, (image.shape[1], image.shape[0]), flags=cv2.INTER_CUBIC)
+
+
+def parse_PDF(file):
+    file_bytes = file.read()
+
+    pages = convert_from_bytes(file_bytes)
+
+    extracted_text = []
+
+    for i,page in enumerate(pages[:3]):
+
+        page_arr = np.array(page)
+        deskewed_page = deskew(page_arr)
+
+        text = extract_text_from_image(deskewed_page)
+        extracted_text.append(text)
+
+    extracted_text = "\n".join(extracted_text)
+
+    return extracted_text
+

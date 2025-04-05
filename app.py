@@ -1,7 +1,9 @@
 from flask import Flask,jsonify
 from flask_restful import Api,Resource,reqparse
 from flask_cors import CORS
-from llm_api import generate_question,generate_question_feedback
+from llm_api import generate_question,generate_question_feedback,generate_assugnment_feedback
+from werkzeug.datastructures import FileStorage
+from pdfParsing import parse_PDF
 
 app = Flask(__name__)
 cors = CORS(app,origins=['*'])
@@ -39,15 +41,22 @@ Bellow function is for Assignment Feedback analysis
 
 
 getAssignmentFeedback_post_parse = reqparse.RequestParser()
-# getAssignmentFeedback_post_parse.add_argument("Topic",)
+getAssignmentFeedback_post_parse.add_argument("Question",type=FileStorage,location='files',required=True,help="PDF file is required")
+getAssignmentFeedback_post_parse.add_argument("Answer",type=FileStorage,location='files',required=True,help="PDF file is required")
 
 class getAssignmentFeedback(Resource):
     def post(self):
-        return jsonify({"Message" : "NOT Yet ready"})
+        data = getAssignmentFeedback_post_parse.parse_args()
+        Answer_pdf_file = data["Answer"]
+        Question_pdf_file = data["Question"]
+        
+        Answer_extracted_text = parse_PDF(Answer_pdf_file)
+        Question_extracted_text = parse_PDF(Question_pdf_file)
+        feedback = generate_assugnment_feedback(Question_extracted_text,Answer_extracted_text)
+        return jsonify(feedback)
     
 api.add_resource(getAssignmentFeedback,'/getAssignmentFeedback')
 
-getAssignmentFeedback_post_parse = reqparse.RequestParser()
 
 
 
@@ -65,12 +74,17 @@ getQuizFeedback_post_parse.add_argument("Score", type=int, action='append', loca
 
 class getQuizFeedback(Resource):
     def post(self):
-        request = getQuizFeedback_post_parse.parse_args()
-        responce = generate_question_feedback(request["Questions"],request["Score"])
+        data = getQuizFeedback_post_parse.parse_args()
+        responce = generate_question_feedback(data["Questions"],data["Score"])
         return responce
     
 api.add_resource(getQuizFeedback,'/getQuizFeedback')
+
+class ChatBot(Resource):
+    def post(self):
+        return jsonify({"Reply" : "Heloo"})
     
+api.add_resource(ChatBot,'/ChatBot')
 
 
 
@@ -78,4 +92,4 @@ api.add_resource(getQuizFeedback,'/getQuizFeedback')
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0",port='5002')
+    app.run(host="0.0.0.0",port='5003',debug=True)
