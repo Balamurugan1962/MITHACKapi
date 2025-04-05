@@ -14,7 +14,7 @@ def chat(content):
         messages=[
             {
                 "role": "system",
-                "content" : "you are a great tech support expert, you clear all the doubts related to tech in only few words, of some one asks other then tech doubts, you wont give them answer, bellow a user has a doubt check wether it is tech related and if so clear it"
+                "content" : "Just go along with what the user is saying"
             },
             {
                 "role": "user",

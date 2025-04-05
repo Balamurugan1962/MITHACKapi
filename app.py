@@ -15,9 +15,9 @@ api = Api(app)
 Bellow function is for Generating Question analysis
 """
 getQuestion_post_parse = reqparse.RequestParser()
-getQuestion_post_parse.add_argument("Topic",type=str,location = 'form',help='Give the topic',required= True)
-getQuestion_post_parse.add_argument("Type",type=str,location = 'form',help='Give the Type',required= True)
-getQuestion_post_parse.add_argument("Quantity",type=int,location = 'form',help='Give the Quantity',required= True)
+getQuestion_post_parse.add_argument("Topic",type=str,help='Give the topic',required= True)
+getQuestion_post_parse.add_argument("Type",type=str,help='Give the Type',required= True)
+getQuestion_post_parse.add_argument("Quantity",type=int,help='Give the Quantity',required= True)
 
 #For Genenrating the questions
 class getQuestion(Resource):
@@ -92,7 +92,6 @@ class ChatBot(Resource):
         reply = chat(args["Message"])
         print(reply)
         return jsonify({"reply" : reply})
-
     def get(self):
         return jsonify({"Hello":"Hiii"})
     
