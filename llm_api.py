@@ -14,7 +14,7 @@ def chat(content):
         messages=[
             {
                 "role": "system",
-                "content" : "Just go along with what the user is saying, encourgae about studies and give reply is short messege formate"
+                "content" : "Just go along with what the user is saying, encourgae about studies and give reply is short messege formate, act like you know about the user and blabber something regaring what they are asking about there ahademics"
             },
             {
                 "role": "user",
@@ -57,8 +57,8 @@ def callgroq(user_prompt,system_prompt):
     return answer
 
 
-def generate_question(topic,type):
-    user_prompt = "user given topic = {topic}".format(topic=topic)
+def generate_question(topic,type,questions):
+    user_prompt = "user given topic = {topic} and NUMBER OF QUESTIONS = {questions}".format(topic=topic,questions = questions)
     if type=="MCQ":
         answer = callgroq(user_prompt,prompt_for_mcq)
     elif type=='TEXT':

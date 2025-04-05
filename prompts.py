@@ -26,7 +26,7 @@ Be concise, positive, and helpful.
 prompt_for_mcq = """
 You are a smart MCQ generator.
 
-Generate FIVE **new** multiple choice questions from the topic: **'user given topic'**.
+Generate GIVEN NUMBER OF **new** multiple choice questions from the topic: **'user given topic'**.
 
 Each question must:
 - Be from a **different sub-topic** of 'user given topic'.
@@ -54,8 +54,10 @@ Ensure the questions vary **every time**, even for the same topic. Introduce ran
 
 
 
-prompt_for_coding = """Generate a coding problem in the following JSON format:
+prompt_for_coding = """Generate GIVEN NUMBER OF coding problem in the following JSON format:
 {
+"Questions": [
+    {
   "question_type": "coding",
   "question": "<Write the problem statement here>",
   "test_cases": [
@@ -69,6 +71,7 @@ prompt_for_coding = """Generate a coding problem in the following JSON format:
     }
   ],
   "tags": ["<relevant tag 1>", "<tag 2>", "<difficulty level>"]
+  ]
 }
 The question should be related to the topic: **user given topic**.
 Include 2–3 test cases, including edge cases and make sure the problem is original and beginner-friendly.
@@ -80,13 +83,14 @@ Strictly output in the above JSON format only.
 
 
 prompt_for_text_question="""
-Generate a text-based theory question in the following JSON format only:
-
-{{
+Generate GIVEN NUMBER OF text-based theory question in the following JSON format only:
+"Questions": [
+    {{
   "question_type": "text",
   "question": "<Insert a conceptual or theoretical question here>",
   "answer": "<Insert the correct answer to the question here>"
-}}
+}}, ....
+]
 
 The question must be from the topic: **user given topic**.
 Do not add any explanation or text outside the JSON.
