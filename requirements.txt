@@ -1,3 +1,5 @@
 flask
 flask-restful
 flask_cors
+dotenv
+google-generativeai
